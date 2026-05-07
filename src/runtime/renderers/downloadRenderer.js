@@ -9,7 +9,7 @@ function resolveAttachment(input) {
   const payload = decodeDownloadAttachmentPayload(input?.attachment?.payloadJson);
   if (!payload) {
     return {
-      displayName: "Download",
+      displayName: "Aria2 Download",
       tintHex: "#6B7280",
       buttons: [
         { id: "submit-download", title: "Submit Download", isEnabled: false }
@@ -18,7 +18,7 @@ function resolveAttachment(input) {
   }
 
   return {
-    displayName: `Download · ${payload.display.headline}`,
+    displayName: "Aria2 Download",
     tintHex: "#2563EB",
     buttons: [
       { id: "submit-download", title: "Submit Download", isEnabled: true }

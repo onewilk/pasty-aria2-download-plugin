@@ -195,7 +195,7 @@ test("download renderer resolves submit button", () => {
   });
 
   const resolved = resolveAttachment({ attachment: { payloadJson } });
-  assert.equal(resolved.displayName, "Download · file.zip");
+  assert.equal(resolved.displayName, "Aria2 Download");
   assert.deepEqual(resolved.buttons.map((entry) => entry.id), ["submit-download"]);
 });
 
