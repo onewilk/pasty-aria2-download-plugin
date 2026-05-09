@@ -6,7 +6,7 @@
           <p class="download-eyebrow">aria2 RPC</p>
           <h1 class="download-title">{{ title }}</h1>
         </div>
-        <span class="download-count">{{ resources.length }}</span>
+        <span class="download-count">{{ linkCountLabel }}</span>
       </header>
 
       <form class="download-form" @submit.prevent="submit">
@@ -43,14 +43,20 @@
             </label>
           </div>
 
-          <div class="resource-list" aria-label="Matched download links">
-            <article v-for="resource in resources" :key="resource.id" class="resource-row">
-              <div class="resource-main">
-                <strong>{{ resource.displayName }}</strong>
-                <span>{{ resource.original }}</span>
-              </div>
-              <small>{{ resource.type }}</small>
-            </article>
+          <div class="resource-panel" aria-label="Matched download links">
+            <header class="resource-panel__header">
+              <strong>{{ resourcePanelTitle }}</strong>
+              <span>These addresses will be submitted to aria2.</span>
+            </header>
+            <div class="resource-list">
+              <article v-for="resource in resources" :key="resource.id" class="resource-row">
+                <div class="resource-main">
+                  <strong>{{ resource.displayName }}</strong>
+                  <span>{{ resource.original }}</span>
+                </div>
+                <small>{{ resource.type }}</small>
+              </article>
+            </div>
           </div>
         </div>
 
@@ -90,12 +96,15 @@ const isSubmitting = ref(false);
 const message = ref("");
 const hasError = ref(false);
 const showConfig = ref(false);
+let submitTimeoutID = null;
 
 const resources = computed(() => Array.isArray(payload.value?.resources)
   ? payload.value.resources
   : []);
 
 const title = computed(() => payload.value?.display?.headline || "Download task");
+const linkCountLabel = computed(() => `${resources.value.length} ${resources.value.length === 1 ? "link" : "links"}`);
+const resourcePanelTitle = computed(() => resources.value.length === 1 ? "Matched Link" : "Matched Links");
 const rpcSummary = computed(() => `${form.rpcProtocol}://${form.rpcHost}:${form.rpcPort}`);
 const directorySummary = computed(() => form.dir ? `Save to ${form.dir}` : "Use aria2 default directory");
 
@@ -146,7 +155,17 @@ function submit() {
 
   isSubmitting.value = true;
   hasError.value = false;
-  message.value = "Submitted. If it fails, check the aria2 RPC configuration and retry.";
+  message.value = "Submitting to aria2...";
+  clearSubmitTimeout();
+  submitTimeoutID = window.setTimeout(() => {
+    if (!isSubmitting.value) {
+      return;
+    }
+    isSubmitting.value = false;
+    hasError.value = true;
+    message.value = "No result was returned. Check the aria2 RPC configuration and Pasty operation result, then retry.";
+    showConfig.value = true;
+  }, 8000);
   invokeAction("submit-download", {
     rpcProtocol: form.rpcProtocol,
     rpcHost: form.rpcHost,
@@ -163,10 +182,21 @@ function handleOperationResult(event) {
   }
 
   isSubmitting.value = false;
+  clearSubmitTimeout();
   hasError.value = detail.success === false;
   message.value = detail.userMessage || (detail.success === false
     ? "Submit failed. Check the aria2 RPC configuration and retry."
     : "Download submitted.");
+  if (hasError.value) {
+    showConfig.value = true;
+  }
+}
+
+function clearSubmitTimeout() {
+  if (submitTimeoutID !== null) {
+    window.clearTimeout(submitTimeoutID);
+    submitTimeoutID = null;
+  }
 }
 
 onMounted(() => {
@@ -174,6 +204,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  clearSubmitTimeout();
   window.removeEventListener("pasty-plugin-operation-result", handleOperationResult);
 });
 </script>
@@ -223,15 +254,19 @@ onUnmounted(() => {
 }
 
 .download-count {
-  display: grid;
-  place-items: center;
-  width: 30px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
   height: 30px;
   border-radius: 8px;
+  padding: 0 9px;
   background: #dbeafe;
   color: #1d4ed8;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .download-form {
@@ -347,11 +382,39 @@ onUnmounted(() => {
   border-color: #2563eb;
 }
 
-.resource-list {
+.resource-panel {
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 6px;
   flex: 1 1 auto;
   min-height: 62px;
+  padding: 8px 9px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.resource-panel__header {
+  display: grid;
+  gap: 2px;
+}
+
+.resource-panel__header strong {
+  color: #0f172a;
+  font-size: 12px;
+}
+
+.resource-panel__header span {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.resource-list {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 0;
+  overflow: auto;
 }
 
 .resource-row {
@@ -359,10 +422,13 @@ onUnmounted(() => {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
-  padding: 8px 9px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: #ffffff;
+  padding: 6px 0 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+.resource-row:first-child {
+  border-top: 0;
+  padding-top: 2px;
 }
 
 .resource-main {
