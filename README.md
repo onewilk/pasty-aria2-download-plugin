@@ -9,6 +9,7 @@ Aria2 Downloader is a Pasty plugin that detects downloadable links from clipboar
 - Shows a compact download form inside Pasty.
 - Submits matched resources through aria2 JSON-RPC.
 - Keeps the form open on submit failure so the RPC config can be corrected and retried.
+- Hides RPC fields when valid defaults or external settings are available, while keeping an edit button for overrides.
 
 ## Supported Inputs
 
@@ -52,6 +53,8 @@ Pasty can provide local, read-only external settings to plugin runtime code. Thi
 - `plugin.pasty.aria2.dir`: default download directory
 
 These settings are local to Pasty and are not written by the plugin. Values entered in the plugin UI take precedence for the current submit action; external settings are used as defaults and runtime fallback values.
+
+When a complete config is available, the UI shows a compact summary instead of the full config form. The form is shown automatically when required values are missing or validation fails.
 
 ## aria2 Setup
 

@@ -10,25 +10,37 @@
       </header>
 
       <form class="download-form" @submit.prevent="submit">
-        <div class="form-grid">
-          <label class="field">
-            <span>Address</span>
-            <input v-model.trim="form.rpcHost" autocomplete="off" spellcheck="false" />
-          </label>
-          <label class="field field--port">
-            <span>Port</span>
-            <input v-model.number="form.rpcPort" type="number" min="1" max="65535" />
-          </label>
-          <label class="field field--secret">
-            <span>RPC Secret</span>
-            <input v-model="form.rpcSecret" type="password" autocomplete="off" />
-          </label>
+        <div v-if="!showConfig" class="config-summary">
+          <div class="config-summary__text">
+            <strong>{{ rpcSummary }}</strong>
+            <span>{{ directorySummary }}</span>
+          </div>
+          <button class="config-summary__button" type="button" @click="showConfig = true">
+            Edit
+          </button>
         </div>
 
-        <label class="field">
-          <span>Download Directory</span>
-          <input v-model.trim="form.dir" autocomplete="off" spellcheck="false" placeholder="Optional" />
-        </label>
+        <div v-else class="config-fields">
+          <div class="form-grid">
+            <label class="field">
+              <span>Address</span>
+              <input v-model.trim="form.rpcHost" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="field field--port">
+              <span>Port</span>
+              <input v-model.number="form.rpcPort" type="number" min="1" max="65535" />
+            </label>
+            <label class="field field--secret">
+              <span>RPC Secret</span>
+              <input v-model="form.rpcSecret" type="password" autocomplete="off" />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Download Directory</span>
+            <input v-model.trim="form.dir" autocomplete="off" spellcheck="false" placeholder="Optional" />
+          </label>
+        </div>
 
         <div class="resource-list" aria-label="Matched download links">
           <article v-for="resource in resources" :key="resource.id" class="resource-row">
@@ -73,12 +85,15 @@ const form = reactive({
 const isSubmitting = ref(false);
 const message = ref("");
 const hasError = ref(false);
+const showConfig = ref(false);
 
 const resources = computed(() => Array.isArray(payload.value?.resources)
   ? payload.value.resources
   : []);
 
 const title = computed(() => payload.value?.display?.headline || "Download task");
+const rpcSummary = computed(() => `${form.rpcProtocol}://${form.rpcHost}:${form.rpcPort}`);
+const directorySummary = computed(() => form.dir ? `Save to ${form.dir}` : "Use aria2 default directory");
 
 watch(
   () => payload.value?.defaults,
@@ -91,9 +106,17 @@ watch(
     form.rpcPort = Number(defaults.rpcPort) || form.rpcPort;
     form.rpcSecret = defaults.rpcSecret || form.rpcSecret;
     form.dir = defaults.dir || form.dir;
+    showConfig.value = !hasCompleteConfig();
   },
   { immediate: true }
 );
+
+function hasCompleteConfig() {
+  return Boolean(form.rpcHost) &&
+    Number.isInteger(Number(form.rpcPort)) &&
+    Number(form.rpcPort) >= 1 &&
+    Number(form.rpcPort) <= 65535;
+}
 
 function validateForm() {
   if (!form.rpcHost) {
@@ -113,6 +136,7 @@ function submit() {
   if (validationError) {
     hasError.value = true;
     message.value = validationError;
+    showConfig.value = true;
     return;
   }
 
@@ -213,6 +237,56 @@ onUnmounted(() => {
   min-height: 0;
 }
 
+.config-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #eff6ff;
+}
+
+.config-summary__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.config-summary__text strong,
+.config-summary__text span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.config-summary__text strong {
+  color: #1e3a8a;
+  font-size: 12px;
+}
+
+.config-summary__text span {
+  color: #475569;
+  font-size: 11px;
+}
+
+.config-summary__button {
+  height: 28px;
+  border: 1px solid #bfdbfe;
+  border-radius: 7px;
+  padding: 0 10px;
+  background: #ffffff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.config-fields {
+  display: grid;
+  gap: 8px;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 82px;
@@ -256,7 +330,7 @@ onUnmounted(() => {
   display: grid;
   gap: 6px;
   min-height: 76px;
-  max-height: 104px;
+  max-height: 118px;
   overflow: auto;
 }
 
