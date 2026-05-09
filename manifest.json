@@ -19,7 +19,7 @@
       "id": "download-renderer",
       "title": "Aria2 Download",
       "attachmentType": "plugin.pasty.aria2.download",
-      "height": 380,
+      "height": 240,
       "uiEntry": "renderers/download-renderer/index.html"
     }
   ],

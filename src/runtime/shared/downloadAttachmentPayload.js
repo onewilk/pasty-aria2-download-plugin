@@ -214,14 +214,46 @@ function buildDisplayName(value, type) {
 
   try {
     const parsed = new URL(value);
-    const attname = parsed.searchParams.get("attname");
-    if (attname && attname.trim()) {
-      return attname.trim();
+    const attname = getQueryParam(parsed.searchParams, "attname") || extractRawQueryParam(value, "attname");
+    if (attname) {
+      return attname;
     }
     const basename = parsed.pathname.split("/").filter(Boolean).pop();
-    return basename ? decodeURIComponent(basename) : parsed.host;
+    return basename ? safeDecodeURIComponent(basename) : parsed.host;
   } catch {
+    const attname = extractRawQueryParam(value, "attname");
+    if (attname) {
+      return attname;
+    }
     return value.length > 96 ? `${value.slice(0, 93)}...` : value;
+  }
+}
+
+function getQueryParam(searchParams, name) {
+  const wanted = name.toLowerCase();
+  for (const [key, value] of searchParams.entries()) {
+    const trimmed = String(value || "").trim();
+    if (key.toLowerCase() === wanted && trimmed) {
+      return trimmed;
+    }
+  }
+  return "";
+}
+
+function extractRawQueryParam(value, name) {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = String(value).match(new RegExp(`[?&]${escapedName}=([^&#]*)`, "i"));
+  if (!match) {
+    return "";
+  }
+  return safeDecodeURIComponent(match[1].replace(/\+/g, " ")).trim();
+}
+
+function safeDecodeURIComponent(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
   }
 }
 

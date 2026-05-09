@@ -32,8 +32,7 @@
 
     <section class="workbench__canvas">
       <div
-        class="host-frame"
-        class="host-frame--renderer"
+        class="host-frame host-frame--renderer"
       >
         <div class="host-frame__title">
           <span>Attachment Renderer</span>
@@ -119,7 +118,7 @@ const minimumViewportSizes = {
 };
 
 const viewportSizes = reactive({
-  renderer: { width: 560, height: 380 }
+  renderer: { width: 560, height: 240 }
 });
 
 const viewportStyle = computed(() => {

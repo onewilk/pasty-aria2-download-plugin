@@ -13,14 +13,14 @@ body,
 }
 
 :root {
-  color: #0f172a;
+  color: inherit;
   font-family: "SF Pro Display", "SF Pro Text", "PingFang SC", sans-serif;
   background: transparent;
 }
 
 body {
   overflow: hidden;
-  color: #0f172a;
+  color: inherit;
   font-family: inherit;
   background: transparent;
 }

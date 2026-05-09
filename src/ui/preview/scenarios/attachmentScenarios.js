@@ -53,6 +53,22 @@ export const attachmentScenarios = [
     ]
   }),
   createDownloadScenario({
+    id: "attname",
+    label: "URL attname",
+    text: "https://file.example.com/upload/raw.bin?attname=base_05-09%2012.apk",
+    resources: [
+      {
+        id: "resource-1",
+        type: "http",
+        sourceKind: "text",
+        uri: "https://file.example.com/upload/raw.bin?attname=base_05-09%2012.apk",
+        original: "https://file.example.com/upload/raw.bin?attname=base_05-09%2012.apk",
+        displayName: "base_05-09 12.apk",
+        isLocalFile: false
+      }
+    ]
+  }),
+  createDownloadScenario({
     id: "batch",
     label: "Batch Links",
     text: "magnet:?xt=urn:btih:d8988e034cb5de79d319242e3365bf30a7741a6e\nftp://mirror.example.com/pub/file.iso",

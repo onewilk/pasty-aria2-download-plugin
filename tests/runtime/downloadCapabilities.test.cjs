@@ -174,7 +174,7 @@ test("download detector uses attname query parameter as display name", async () 
     "src/runtime/detectors/downloadDetector.js"
   ));
 
-  const url = "https://file.example.com/upload_files/2026/05/09/raw.bin?attname=release.apk";
+  const url = "https://file.example.com/upload_files/2026/05/09/raw.bin?AttName=base_05-09%2012.apk";
   const artifacts = await detectDownloadAttachment({
     content: {
       kind: "text",
@@ -185,8 +185,8 @@ test("download detector uses attname query parameter as display name", async () 
   });
 
   const payload = JSON.parse(artifacts[0].payloadJson);
-  assert.equal(payload.resources[0].displayName, "release.apk");
-  assert.equal(payload.display.headline, "release.apk");
+  assert.equal(payload.resources[0].displayName, "base_05-09 12.apk");
+  assert.equal(payload.display.headline, "base_05-09 12.apk");
 });
 
 

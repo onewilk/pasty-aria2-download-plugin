@@ -96,10 +96,10 @@ const themeStyle = computed(() => {
   const accent = normalizeHexColor(session.accentHex) || "#2563eb";
   return {
     "--accent": accent,
-    "--accent-soft": hexToRgba(accent, 0.12),
-    "--accent-border": hexToRgba(accent, 0.24),
+    "--accent-soft": hexToRgba(accent, 0.1),
+    "--accent-border": hexToRgba(accent, 0.26),
     "--accent-strong": shadeHex(accent, -18),
-    "--accent-shadow": hexToRgba(accent, 0.24)
+    "--accent-shadow": hexToRgba(accent, 0.22)
   };
 });
 
@@ -242,15 +242,21 @@ onUnmounted(() => {
 .download-shell {
   height: 100%;
   background: transparent;
-  color: color-mix(in srgb, var(--accent) 18%, #111827);
+  color: inherit;
+  --text-primary: currentColor;
+  --text-muted: color-mix(in srgb, currentColor 68%, transparent);
+  --field-surface: color-mix(in srgb, currentColor 8%, transparent);
+  --field-surface-strong: color-mix(in srgb, currentColor 12%, transparent);
+  --button-surface: rgba(255, 255, 255, 0.92);
+  --button-text: #111827;
 }
 
 .download-panel {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   height: 100%;
-  padding: 14px;
+  padding: 10px 12px;
   overflow: hidden;
 }
 
@@ -275,19 +281,20 @@ onUnmounted(() => {
   border: 1px solid var(--accent-border);
   border-radius: 999px;
   background: var(--accent-soft);
-  color: var(--accent-strong);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
 }
 
 .help-button:hover {
-  background: color-mix(in srgb, var(--accent) 18%, #ffffff);
+  background: var(--accent);
+  color: #ffffff;
 }
 
 .download-eyebrow {
   margin: 0;
-  color: color-mix(in srgb, var(--accent) 42%, #64748b);
+  color: var(--accent-strong);
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -295,27 +302,27 @@ onUnmounted(() => {
 
 .download-title {
   margin: 3px 0 0;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: color-mix(in srgb, var(--accent) 16%, #0f172a);
+  color: var(--text-primary);
 }
 
 .download-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex: 1 1 auto;
   min-height: 0;
 }
 
 .download-form__scroll {
   display: flex;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   min-height: 0;
   overflow: auto;
   padding-right: 2px;
@@ -332,7 +339,7 @@ onUnmounted(() => {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
-  padding: 9px 10px;
+  padding: 8px 9px;
   border: 1px solid var(--accent-border);
   border-radius: 8px;
   background: var(--accent-soft);
@@ -352,12 +359,12 @@ onUnmounted(() => {
 }
 
 .config-summary__text strong {
-  color: var(--accent-strong);
+  color: var(--text-primary);
   font-size: 12px;
 }
 
 .config-summary__text span {
-  color: color-mix(in srgb, var(--accent) 20%, #475569);
+  color: var(--text-muted);
   font-size: 11px;
 }
 
@@ -366,8 +373,8 @@ onUnmounted(() => {
   border: 1px solid var(--accent-border);
   border-radius: 7px;
   padding: 0 10px;
-  background: color-mix(in srgb, var(--accent) 4%, #ffffff);
-  color: var(--accent-strong);
+  background: var(--button-surface);
+  color: var(--button-text);
   font-size: 12px;
   font-weight: 700;
 }
@@ -394,7 +401,7 @@ onUnmounted(() => {
 }
 
 .field span {
-  color: color-mix(in srgb, var(--accent) 18%, #475569);
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 700;
 }
@@ -402,11 +409,11 @@ onUnmounted(() => {
 .field input {
   min-width: 0;
   height: 30px;
-  border: 1px solid color-mix(in srgb, var(--accent) 16%, #cbd5e1);
+  border: 1px solid var(--accent-border);
   border-radius: 7px;
   padding: 0 9px;
-  background: color-mix(in srgb, var(--accent) 3%, #ffffff);
-  color: color-mix(in srgb, var(--accent) 16%, #0f172a);
+  background: var(--field-surface);
+  color: var(--text-primary);
   font: inherit;
   font-size: 12px;
 }
@@ -414,12 +421,13 @@ onUnmounted(() => {
 .field input:focus {
   outline: 2px solid var(--accent-border);
   border-color: var(--accent);
+  background: var(--field-surface-strong);
 }
 
 .status-message {
   margin: 0;
   min-height: 16px;
-  color: var(--accent-strong);
+  color: var(--text-primary);
   font-size: 11px;
   line-height: 1.35;
 }
@@ -429,7 +437,7 @@ onUnmounted(() => {
 }
 
 .submit-button {
-  height: 42px;
+  height: 38px;
   border: 0;
   border-radius: 10px;
   background: linear-gradient(180deg, var(--accent), var(--accent-strong));
@@ -475,7 +483,7 @@ onUnmounted(() => {
 
 .empty-state__body {
   margin: 8px 0 0;
-  color: color-mix(in srgb, var(--accent) 18%, #64748b);
+  color: var(--text-muted);
   font-size: 13px;
   line-height: 1.45;
 }
