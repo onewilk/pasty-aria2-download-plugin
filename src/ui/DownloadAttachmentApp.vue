@@ -254,9 +254,9 @@ onUnmounted(() => {
 .download-panel {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   height: 100%;
-  padding: 10px 12px;
+  padding: 10px 12px 12px;
   overflow: hidden;
 }
 
@@ -294,7 +294,7 @@ onUnmounted(() => {
 
 .download-eyebrow {
   margin: 0;
-  color: var(--accent-strong);
+  color: var(--text-muted);
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -314,7 +314,7 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-height: 0;
 }
 
@@ -331,7 +331,7 @@ onUnmounted(() => {
 .download-form__footer {
   display: grid;
   flex: 0 0 auto;
-  gap: 7px;
+  gap: 6px;
 }
 
 .config-summary {

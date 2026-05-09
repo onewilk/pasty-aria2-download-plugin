@@ -1,19 +1,19 @@
-# Aria2 Downloader
+# ⚡ Aria2 Downloader
 
 [中文](README_cn.md) | English
 
 Aria2 Downloader is a Pasty plugin that detects downloadable links from clipboard items and submits them to an aria2 JSON-RPC server.
 
-## Features
+## ✨ Features
 
-- Detects `text` clipboard items containing download links.
-- Detects `path_reference` clipboard items for local torrent and metalink files.
-- Shows a compact download form inside Pasty.
-- Submits matched resources through aria2 JSON-RPC.
-- Keeps the form open on submit failure so the RPC config can be corrected and retried.
-- Hides RPC fields when valid defaults or external settings are available, while keeping an edit button for overrides.
+- 🔎 Detects `text` clipboard items containing download links.
+- 📎 Detects `path_reference` clipboard items for local torrent and metalink files.
+- 🧩 Shows a compact download form inside Pasty.
+- 🚀 Submits matched resources through aria2 JSON-RPC.
+- 🛠️ Keeps the form open on submit failure so the RPC config can be corrected and retried.
+- ⚙️ Hides RPC fields when valid defaults or external settings are available, while keeping an edit button for overrides.
 
-## Supported Inputs
+## 🔗 Supported Inputs
 
 Text input is matched line by line. Each non-empty line must be a supported download value:
 
@@ -33,7 +33,7 @@ Path references are matched when the copied file path ends with:
 
 Embedded links inside prose are intentionally ignored. Copy the URL itself, or use one URL per line.
 
-## Default aria2 RPC Config
+## ⚙️ Default aria2 RPC Config
 
 The UI opens with these defaults:
 
@@ -44,7 +44,7 @@ The UI opens with these defaults:
 
 The values can be edited before submitting.
 
-## External Settings
+## 🧭 External Settings
 
 Pasty can provide local, read-only external settings to plugin runtime code. This plugin reads the following keys when available:
 
@@ -58,7 +58,9 @@ These settings are local to Pasty and are not written by the plugin. Values ente
 
 When a complete config is available, the UI shows a compact summary instead of the full config form. The form is shown automatically when required values are missing or validation fails.
 
-## aria2 Setup
+The renderer uses a fixed Pasty attachment height. The layout is tuned so the collapsed summary stays compact and the expanded config form remains usable inside the same panel.
+
+## 🛰️ aria2 Setup
 
 Start aria2 with JSON-RPC enabled and a matching secret. Example:
 
@@ -68,7 +70,7 @@ aria2c --enable-rpc --rpc-listen-all=false --rpc-listen-port=16800 --rpc-secret=
 
 If aria2 uses a different port, host, or secret, update the fields in the plugin UI before submitting.
 
-## Development
+## 🧑‍💻 Development
 
 Install dependencies:
 
@@ -94,7 +96,7 @@ Preview the renderer UI:
 npm run dev
 ```
 
-## Pasty Installation
+## 📦 Pasty Installation
 
 For local development, add this plugin root directory to Pasty Developer Plugins:
 
@@ -109,7 +111,7 @@ Pasty loads the built files declared in `manifest.json`:
 
 After changing `manifest.json`, detector IDs, attachment types, or UI entries, rebuild and reload the plugin in Pasty.
 
-## Plugin IDs
+## 🏷️ Plugin IDs
 
 - Plugin ID: `plugin.pasty.aria2`
 - Detector ID: `link-detector`
@@ -118,7 +120,7 @@ After changing `manifest.json`, detector IDs, attachment types, or UI entries, r
 - Attachment type: `plugin.pasty.aria2.download`
 - Attachment display name: `Aria2 Download`
 
-## Verification
+## ✅ Verification
 
 Before committing, run:
 

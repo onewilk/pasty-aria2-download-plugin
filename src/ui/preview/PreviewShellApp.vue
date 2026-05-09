@@ -118,7 +118,7 @@ const minimumViewportSizes = {
 };
 
 const viewportSizes = reactive({
-  renderer: { width: 560, height: 240 }
+  renderer: { width: 560, height: 320 }
 });
 
 const viewportStyle = computed(() => {
