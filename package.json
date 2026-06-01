@@ -1,7 +1,7 @@
 {
   "name": "@pasty/aira2-plugin",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Pasty plugin that detects download links and submits them to aria2 RPC.",
   "scripts": {
     "clean": "rm -rf dist",

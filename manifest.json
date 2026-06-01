@@ -3,7 +3,7 @@
   "plugin": {
     "id": "plugin.pasty.aria2",
     "title": "Aria2 Downloader",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "install": {
     "runtime": "node",
