@@ -14,8 +14,8 @@ const pages = [
     name: "download-renderer",
     kind: "renderers",
     globalName: "PastyDownloadPluginRenderer",
-    entry: path.resolve(projectRoot, "src/ui/renderers/download-renderer/main.js"),
-    template: path.resolve(projectRoot, "src/ui/renderers/download-renderer/index.html")
+    entry: path.resolve(projectRoot, "src/features/aria2-download/main.ts"),
+    template: path.resolve(projectRoot, "src/features/aria2-download/index.html")
   }
 ];
 

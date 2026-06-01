@@ -8,7 +8,7 @@ const projectRoot = path.resolve(__dirname, "..");
 const rendererUIPath = path.resolve(projectRoot, "dist/ui/renderers/download-renderer/index.html");
 const rendererJSPath = path.resolve(projectRoot, "dist/ui/renderers/download-renderer/index.js");
 const rendererCSSPath = path.resolve(projectRoot, "dist/ui/renderers/download-renderer/index.css");
-const runtimeEntryPath = path.resolve(projectRoot, "dist/runtime/index.cjs");
+const runtimeEntryPath = path.resolve(projectRoot, "dist/plugin.cjs");
 
 const rendererUI = await readFile(rendererUIPath, "utf8");
 await readFile(rendererJSPath, "utf8");
@@ -25,12 +25,11 @@ if (rendererUI.includes('src="/') || rendererUI.includes('href="/')) {
 
 if (
   !runtimeEntry.includes("definePlugin") ||
-  !runtimeEntry.includes("invokeOperation") ||
   !runtimeEntry.includes("link-detector") ||
   !runtimeEntry.includes("download-renderer") ||
-  !runtimeEntry.includes("submit-download")
+  !runtimeEntry.includes("aria2.submitDownloads")
 ) {
-  throw new Error("dist/runtime/index.cjs does not contain the required download runtime bundles.");
+  throw new Error("dist/plugin.cjs does not contain the required download runtime bundles.");
 }
 
 console.log("Build verification passed.");

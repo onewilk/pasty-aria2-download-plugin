@@ -10,7 +10,7 @@
     "entry": "scripts/install.mjs"
   },
   "runtime": {
-    "nodeEntry": "dist/runtime/index.cjs",
+    "nodeEntry": "dist/plugin.cjs",
     "uiRoot": "dist/ui"
   },
   "permissions": [],
@@ -19,7 +19,10 @@
       "id": "download-renderer",
       "title": "Aria2 Download",
       "attachmentType": "plugin.pasty.aria2.download",
-      "height": 320,
+      "height": {
+        "min": 140,
+        "max": 480
+      },
       "uiEntry": "renderers/download-renderer/index.html"
     }
   ],
