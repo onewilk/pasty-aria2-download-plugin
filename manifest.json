@@ -16,19 +16,19 @@
   "permissions": [],
   "attachmentRenderers": [
     {
-      "id": "download-renderer",
+      "id": "aira2-download-renderer",
       "title": "Aria2 Download",
       "attachmentType": "plugin.pasty.aria2.download",
       "height": {
         "min": 140,
         "max": 480
       },
-      "uiEntry": "renderers/download-renderer/index.html"
+      "uiEntry": "renderers/aira2-download-renderer/index.html"
     }
   ],
   "detectors": [
     {
-      "id": "link-detector",
+      "id": "aira2-link-detector",
       "title": "Aria2 Link Detector",
       "supportedInputKinds": [
         "text",

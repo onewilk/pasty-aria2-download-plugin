@@ -136,9 +136,9 @@ Pasty 会加载 `manifest.json` 中声明的构建产物：
 ## 🏷️ 插件标识
 
 - 插件 ID：`plugin.pasty.aria2`
-- Detector ID：`link-detector`
+- Detector ID：`aira2-link-detector`
 - Detector 显示名：`Aria2 Link Detector`
-- Attachment renderer ID：`download-renderer`
+- Attachment renderer ID：`aira2-download-renderer`
 - Attachment type：`plugin.pasty.aria2.download`
 - Attachment 显示名：`Aria2 Download`
 - Attachment 强调色：`#3B82F6`

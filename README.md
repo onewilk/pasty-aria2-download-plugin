@@ -136,9 +136,9 @@ After changing `manifest.json`, detector IDs, attachment types, runtime code, or
 ## 🏷️ Plugin IDs
 
 - Plugin ID: `plugin.pasty.aria2`
-- Detector ID: `link-detector`
+- Detector ID: `aira2-link-detector`
 - Detector display name: `Aria2 Link Detector`
-- Attachment renderer ID: `download-renderer`
+- Attachment renderer ID: `aira2-download-renderer`
 - Attachment type: `plugin.pasty.aria2.download`
 - Attachment display name: `Aria2 Download`
 - Attachment accent color: `#3B82F6`

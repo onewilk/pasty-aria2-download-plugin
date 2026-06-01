@@ -71,23 +71,23 @@ test("manifest registers new SDK runtime, download detector, and bounded rendere
   assert.equal(manifest.attachmentRenderers.length, 1);
   assert.equal(manifest.actions.length, 0);
 
-  const detector = manifest.detectors.find((entry) => entry.id === "link-detector");
+  const detector = manifest.detectors.find((entry) => entry.id === "aira2-link-detector");
   assert.ok(detector);
   assert.deepEqual(detector.supportedInputKinds, ["text", "path_reference"]);
   assert.deepEqual(detector.attachmentTypes, ["plugin.pasty.aria2.download"]);
 
-  const renderer = manifest.attachmentRenderers.find((entry) => entry.id === "download-renderer");
+  const renderer = manifest.attachmentRenderers.find((entry) => entry.id === "aira2-download-renderer");
   assert.ok(renderer);
   assert.equal(renderer.attachmentType, "plugin.pasty.aria2.download");
   assert.deepEqual(renderer.height, { min: 140, max: 480 });
-  assert.equal(renderer.uiEntry, "renderers/download-renderer/index.html");
+  assert.equal(renderer.uiEntry, "renderers/aira2-download-renderer/index.html");
 });
 
 test("runtime setup registers download handlers and message handlers", () => {
   const runtime = loadRuntime();
 
-  assert.ok(runtime.detectors["link-detector"]);
-  assert.ok(runtime.attachmentRenderers["download-renderer"]);
+  assert.ok(runtime.detectors["aira2-link-detector"]);
+  assert.ok(runtime.attachmentRenderers["aira2-download-renderer"]);
   assert.ok(runtime.messageHandlers["aria2.readConfig"]);
   assert.ok(runtime.messageHandlers["aria2.submitDownloads"]);
   assert.deepEqual(runtime.actions, {});
@@ -95,7 +95,7 @@ test("runtime setup registers download handlers and message handlers", () => {
 
 test("download detector emits artifact for supported text links", async () => {
   const runtime = loadRuntime();
-  const artifacts = await runtime.detectors["link-detector"].detect(textInput([
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(textInput([
     "https://example.com/file.zip",
     "ftp://mirror.example.com/image.iso",
     "d8988e034cb5de79d319242e3365bf30a7741a6e"
@@ -123,7 +123,7 @@ test("download detector emits artifact for supported text links", async () => {
 
 test("download detector reads aria2 defaults from external settings", async () => {
   const runtime = loadRuntime();
-  const artifacts = await runtime.detectors["link-detector"].detect(
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(
     textInput("https://example.com/file.zip"),
     settingsContext({
       "plugin.pasty.aria2.rpcProtocol": "https",
@@ -155,7 +155,7 @@ test("download detector falls back to getAll when single setting reads are empty
     "plugin.pasty.aria2.rpcSecret": "configured-secret",
     "plugin.pasty.aria2.dir": "~/Downloads"
   };
-  const artifacts = await runtime.detectors["link-detector"].detect(
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(
     textInput("https://example.com/file.zip"),
     {
       host: {
@@ -185,7 +185,7 @@ test("download detector falls back to getAll when single setting reads are empty
 test("download detector decodes thunder links", async () => {
   const runtime = loadRuntime();
   const thunder = `thunder://${Buffer.from("AAhttp://example.com/file.zipZZ").toString("base64")}`;
-  const artifacts = await runtime.detectors["link-detector"].detect(textInput(thunder));
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(textInput(thunder));
 
   const payload = payloadFromArtifact(artifacts[0]);
   assert.equal(payload.resources[0].type, "thunder");
@@ -196,7 +196,7 @@ test("download detector decodes thunder links", async () => {
 test("download detector matches GitHub release asset URLs", async () => {
   const runtime = loadRuntime();
   const url = "https://github.com/AnInsomniacy/motrix-next/releases/download/v3.8.7/MotrixNext_3.8.7_aarch64.dmg";
-  const artifacts = await runtime.detectors["link-detector"].detect(textInput(url));
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(textInput(url));
 
   assert.equal(artifacts.length, 1);
   const payload = payloadFromArtifact(artifacts[0]);
@@ -207,7 +207,7 @@ test("download detector matches GitHub release asset URLs", async () => {
 test("download detector preserves repeated download links as separate resources", async () => {
   const runtime = loadRuntime();
   const url = "https://file.yzcdn.cn/upload_files/yz-file/2026/05/09/lo7nMoWFGsWMLhoRTyBvtZl1FLAY.apk?attname=base_05-09-15-15.apk";
-  const artifacts = await runtime.detectors["link-detector"].detect(textInput([url, url, url].join("\n")));
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(textInput([url, url, url].join("\n")));
 
   const payload = payloadFromArtifact(artifacts[0]);
   assert.equal(payload.resources.length, 3);
@@ -222,7 +222,7 @@ test("download detector preserves repeated download links as separate resources"
 test("download detector uses attname query parameter as display name", async () => {
   const runtime = loadRuntime();
   const url = "https://file.example.com/upload_files/2026/05/09/raw.bin?AttName=base_05-09%2012.apk";
-  const artifacts = await runtime.detectors["link-detector"].detect(textInput(url));
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(textInput(url));
 
   const payload = payloadFromArtifact(artifacts[0]);
   assert.equal(payload.resources[0].displayName, "base_05-09 12.apk");
@@ -231,7 +231,7 @@ test("download detector uses attname query parameter as display name", async () 
 
 test("download detector emits local torrent and metalink files from path references", async () => {
   const runtime = loadRuntime();
-  const artifacts = await runtime.detectors["link-detector"].detect(pathInput([
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(pathInput([
     { kind: "file", path: "/tmp/ubuntu.torrent", displayName: "ubuntu.torrent" },
     { kind: "file", path: "/tmp/list.meta4", displayName: "list.meta4" },
     { kind: "file", path: "/tmp/readme.txt", displayName: "readme.txt" }
@@ -245,7 +245,7 @@ test("download detector emits local torrent and metalink files from path referen
 
 test("download detector rejects prose with embedded URLs", async () => {
   const runtime = loadRuntime();
-  const artifacts = await runtime.detectors["link-detector"].detect(textInput("Visit https://example.com/file.zip for details"));
+  const artifacts = await runtime.detectors["aira2-link-detector"].detect(textInput("Visit https://example.com/file.zip for details"));
   assert.equal(artifacts.length, 0);
 });
 
@@ -272,7 +272,7 @@ test("download renderer resolves valid payload and hides invalid payload", async
     }
   });
 
-  const resolved = await runtime.attachmentRenderers["download-renderer"].resolveAttachment({
+  const resolved = await runtime.attachmentRenderers["aira2-download-renderer"].resolveAttachment({
     item: { id: "item-1", type: "text", tags: [], sourceAppID: "" },
     content: { kind: "text", text: "https://example.com/file.zip" },
     attachments: [],
@@ -290,7 +290,7 @@ test("download renderer resolves valid payload and hides invalid payload", async
     { id: "open-help", title: "Help", isEnabled: true }
   ]);
 
-  const hidden = await runtime.attachmentRenderers["download-renderer"].resolveAttachment({
+  const hidden = await runtime.attachmentRenderers["aira2-download-renderer"].resolveAttachment({
     item: { id: "item-1", type: "text", tags: [], sourceAppID: "" },
     content: { kind: "text", text: "" },
     attachments: [],

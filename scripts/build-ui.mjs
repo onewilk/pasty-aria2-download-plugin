@@ -11,7 +11,7 @@ const uiOutputRoot = path.resolve(projectRoot, "dist/ui");
 
 const pages = [
   {
-    name: "download-renderer",
+    name: "aira2-download-renderer",
     kind: "renderers",
     globalName: "PastyDownloadPluginRenderer",
     entry: path.resolve(projectRoot, "src/features/aria2-download/main.ts"),

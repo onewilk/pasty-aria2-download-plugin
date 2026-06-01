@@ -1,7 +1,7 @@
 export const PLUGIN_ID = "plugin.pasty.aria2";
 export const ATTACHMENT_TYPE = "plugin.pasty.aria2.download";
-export const DETECTOR_ID = "link-detector";
-export const RENDERER_ID = "download-renderer";
+export const DETECTOR_ID = "aira2-link-detector";
+export const RENDERER_ID = "aira2-download-renderer";
 export const HELP_ACTION_ID = "open-help";
 export const HELP_URL = "https://github.com/onewilk/pasty-aria2-download-plugin";
 
